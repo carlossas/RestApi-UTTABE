@@ -7,6 +7,7 @@ use Restserver\libraries\REST_Controller;
 
 class Welcome extends REST_Controller {
 
+	//CONSTRUCTOR DE LA CLASE
 	public function __construct(){
 
 		//ALLOW HEADER - PERMISOS DE URL
@@ -18,9 +19,11 @@ class Welcome extends REST_Controller {
 		$this->load->database();
 	}
 
-	public function index()
+	//INDEX ES NECESARIO
+	public function index_get()
 	{
 		$this->load->view('welcome_message');
+		$this->response( 'welcome_message' );
 	}
 
 }
