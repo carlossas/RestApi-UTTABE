@@ -31,16 +31,22 @@ class Usuario extends REST_Controller {
 		$data = $this->post();
 
 		//DATOS QUE NO SE PUEDEN REPETIR
-        $condiciones = array(
+        $condicion1 = array(
 			'matricula' => $data['matricula'],
+		);
+		$condicion2 = array(
 			'correo' => $data['correo']
-        );
+		);
+		
 
-        //BUSCA EL USUARIO DENTRO DE LA BASE DED DATOS
-        $query = $this->db->get_where('usuarios', $condiciones);
-        $get_user = $query->row();
+        //BUSCA EL USUARIO DENTRO DE LA BASE DE DATOS
+		$queryMatricula = $this->db->get_where('usuarios', $condicion1);
+		$queryCorreo = $this->db->get_where('usuarios', $condicion2);
 
-        if( isset($get_user) ){
+		$get_matricula = $queryMatricula->row();
+		$get_correo = $queryCorreo->row();
+
+        if( isset($get_matricula) || isset($get_correo) ){
             $respuesta = array(
                 'error' => TRUE,
                 'mensaje' => 'El usuario ya existe'
