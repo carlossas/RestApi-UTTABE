@@ -23,7 +23,7 @@ class Login extends REST_Controller {
         
         $data = $this->post();
         //SI LA INFORMACION ESTA VACIA
-        if( !isset( $data['correo']) OR !isset( $data['contrasena']) ){
+        if( !isset( $data['matricula']) OR !isset( $data['contrasena']) ){
             $respuesta = array(
                 'error' => TRUE,
                 'mensaje' => 'Algo ocurrio mal!'
@@ -35,13 +35,13 @@ class Login extends REST_Controller {
 
         //SI TODO SALE BIEN
         $condiciones = array(
-            'correo' => $data['correo'],
+            'matricula' => $data['matricula'],
             'contrasena' => $data['contrasena']
         );
 
-        //BUSCA EL USUARIO DENTRO DE LA BASE DED DATOS
+        //BUSCA EL USUARIO DENTRO DE LA BASE DE DATOS
 
-        $query = $this->db->get_where('login', $condiciones);
+        $query = $this->db->get_where('usuarios', $condiciones);
 
         $usuario = $query->row();
 
@@ -59,9 +59,9 @@ class Login extends REST_Controller {
         
         //CREAR TOKEN
         //1 formaa de crearlo
-        $token = bin2hex( openssl_random_pseudo_bytes(20) );
+        // $token = bin2hex( openssl_random_pseudo_bytes(20) );
         //2 forma de crearlo
-        $token = hash('ripemd160', $data['correo']);
+        $token = hash('ripemd160', $data['matricula']);
 
         //GUARDAR EN BASE DE DATOS EL TOKEN
 
@@ -70,13 +70,13 @@ class Login extends REST_Controller {
 
         //ACTUALIZA TOKEN
         $actualizar_token = array ( 'token' => $token );
-        $this->db->where( 'id', $usuario->id );
-        $update = $this->db->update( 'login ', $actualizar_token);
+        $this->db->where( 'id_usuario', $usuario->id_usuario );
+        $update = $this->db->update( 'usuarios ', $actualizar_token);
 
         $respuesta = array(
             'error' => FALSE,
             'token' => $token,
-            'id_usuario' => $usuario->id
+            'usuario' => $usuario
         );
 
         $this->response($respuesta);

@@ -80,5 +80,50 @@ class Usuario extends REST_Controller {
 		$this->response( $respuesta );
 
 	}
+
+	//OBTENER UN USUARIO POR ID
+	public function obtenerUsuarioPorId_post(){
+		$data = $this->post();
+		//SI LA INFORMACION ESTA VACIA
+        if( !isset( $data['id_usuario']) ){
+            $respuesta = array(
+                'error' => TRUE,
+                'mensaje' => 'Algo ocurrio mal!'
+            );
+
+            $this->response($respuesta, REST_Controller::HTTP_BAD_REQUEST);
+            return;
+		}
+		
+		//SI EL ID SE ENVIO BIEN
+        $condiciones = array(
+            'id_usuario' => $data['id_usuario'],
+		);
+
+		//BUSCA EL USUARIO DENTRO DE LA BASE DE DATOS
+        $query = $this->db->get_where('usuarios', $condiciones);
+		
+		$usuario = $query->row();
+		//SI NO SE ENCUENTRA NINGUN USUARIO
+		if( !isset($usuario) ){
+            $respuesta = array(
+                'error' => TRUE,
+                'mensaje' => 'No existe ningun usuario con este id'
+            );
+
+            $this->response($respuesta);
+            return;
+		}
+
+		$usuario->contrasena = 'k mira prro';
+
+		$respuesta = array(
+            'error' => FALSE,
+            'usuario' => $usuario
+        );
+
+        $this->response($respuesta);
+
+	}
 	
 }
