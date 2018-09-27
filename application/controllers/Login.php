@@ -59,7 +59,7 @@ class Login extends REST_Controller {
         
         //CREAR TOKEN
         //1 formaa de crearlo
-        // $token = bin2hex( openssl_random_pseudo_bytes(20) );
+        $token = bin2hex( openssl_random_pseudo_bytes(20) );
         //2 forma de crearlo
         $token = hash('ripemd160', $data['matricula']);
 
@@ -72,6 +72,8 @@ class Login extends REST_Controller {
         $actualizar_token = array ( 'token' => $token );
         $this->db->where( 'id_usuario', $usuario->id_usuario );
         $update = $this->db->update( 'usuarios ', $actualizar_token);
+
+       $usuario->contrasena = 'k mira prro';
 
         $respuesta = array(
             'error' => FALSE,
