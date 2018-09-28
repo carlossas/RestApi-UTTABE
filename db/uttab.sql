@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.2
+-- version 4.6.6
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Sep 21, 2018 at 04:38 AM
--- Server version: 5.7.13-log
--- PHP Version: 7.0.7
+-- Servidor: localhost
+-- Tiempo de generación: 28-09-2018 a las 19:47:33
+-- Versión del servidor: 5.7.17-log
+-- Versión de PHP: 7.1.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `uttab`
+-- Base de datos: `uttab`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `calificacion`
+-- Estructura de tabla para la tabla `calificacion`
 --
 
 CREATE TABLE `calificacion` (
@@ -36,7 +36,7 @@ CREATE TABLE `calificacion` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `carreras`
+-- Estructura de tabla para la tabla `carreras`
 --
 
 CREATE TABLE `carreras` (
@@ -46,16 +46,19 @@ CREATE TABLE `carreras` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `carreras`
+-- Volcado de datos para la tabla `carreras`
 --
 
 INSERT INTO `carreras` (`id_carrera`, `nombre`, `tipo`) VALUES
-(1, 'TSU EN TECNOLOGÍAS DE LA INFORMACIÓN Y COMUNICACIÓN ÁREA MULTIMEDIA Y COMERCIO ELECTRÓNICO ', '0');
+(1, 'TSU EN TECNOLOGÍAS DE LA INFORMACIÓN Y COMUNICACIÓN ÁREA MULTIMEDIA Y COMERCIO ELECTRÓNICO ', '0'),
+(2, 'TSU EN DESARROLLO DE NEGOCIOS ÁREA MERCADOTECNIA ', '0'),
+(3, 'TSU EN TECNOLOGÍAS DE LA INFORMACIÓN Y COMUNICACIÓN ÁREA ENTORNOS VIRTUALES Y NEGOCIOS DIGITALES', '0'),
+(4, 'TSU EN TECNOLOGÍAS DE LA INFORMACIÓN Y COMUNICACIÓN ÁREA DESARROLLO DE SOFTWARE MULTIPLATAFORMA', '0');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `examen`
+-- Estructura de tabla para la tabla `examen`
 --
 
 CREATE TABLE `examen` (
@@ -63,13 +66,22 @@ CREATE TABLE `examen` (
   `id_carrera` int(11) NOT NULL,
   `id_profesor` int(11) NOT NULL,
   `random` int(5) NOT NULL,
-  `numeroPreguntas` int(10) NOT NULL
+  `numeroPreguntas` int(10) NOT NULL,
+  `nombre` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `tiempo` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `examen`
+--
+
+INSERT INTO `examen` (`id_examen`, `id_carrera`, `id_profesor`, `random`, `numeroPreguntas`, `nombre`, `tiempo`) VALUES
+(1, 1, 2, 0, 3, 'Matematicas 1', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `preguntas`
+-- Estructura de tabla para la tabla `preguntas`
 --
 
 CREATE TABLE `preguntas` (
@@ -82,10 +94,19 @@ CREATE TABLE `preguntas` (
   `respuesta` varchar(150) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `preguntas`
+--
+
+INSERT INTO `preguntas` (`id_preguntas`, `pregunta`, `id_examen`, `opcion1`, `opcion2`, `opcion3`, `respuesta`) VALUES
+(7, 'cuanto es 10+20', 1, '1020', '120', '20', '30'),
+(8, 'Cual es la raiz de 9', 1, '6', '18', '4.5', '3'),
+(9, 'Cuanto es 5x5', 1, '10', '15', '55', '25');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `usuarios`
+-- Estructura de tabla para la tabla `usuarios`
 --
 
 CREATE TABLE `usuarios` (
@@ -95,79 +116,72 @@ CREATE TABLE `usuarios` (
   `correo` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `contrasena` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `tipo` int(5) NOT NULL,
-  `id_carrera` int(11) NOT NULL
+  `id_carrera` int(11) NOT NULL,
+  `token` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Indexes for dumped tables
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id_usuario`, `matricula`, `nombre`, `correo`, `contrasena`, `tipo`, `id_carrera`, `token`) VALUES
+(1, '421510121_i', 'carlos', 'carlossas_97@hotmail.com', '123', 1, 1, '6cbfd8e02e3e7037a237791084adb2dadb9d98ab');
+
+--
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `carreras`
+-- Indices de la tabla `carreras`
 --
 ALTER TABLE `carreras`
   ADD PRIMARY KEY (`id_carrera`);
 
 --
--- Indexes for table `examen`
+-- Indices de la tabla `examen`
 --
 ALTER TABLE `examen`
   ADD PRIMARY KEY (`id_examen`),
   ADD KEY `id_carrera` (`id_carrera`);
 
 --
--- Indexes for table `preguntas`
+-- Indices de la tabla `preguntas`
 --
 ALTER TABLE `preguntas`
   ADD PRIMARY KEY (`id_preguntas`),
-  ADD KEY `id_examen` (`id_examen`);
+  ADD KEY `id_examen` (`id_examen`),
+  ADD KEY `id_examen_2` (`id_examen`);
 
 --
--- Indexes for table `usuarios`
+-- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id_usuario`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `carreras`
+-- AUTO_INCREMENT de la tabla `carreras`
 --
 ALTER TABLE `carreras`
-  MODIFY `id_carrera` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_carrera` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
--- AUTO_INCREMENT for table `examen`
+-- AUTO_INCREMENT de la tabla `examen`
 --
 ALTER TABLE `examen`
-  MODIFY `id_examen` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_examen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT for table `preguntas`
+-- AUTO_INCREMENT de la tabla `preguntas`
 --
 ALTER TABLE `preguntas`
-  MODIFY `id_preguntas` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_preguntas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
--- AUTO_INCREMENT for table `usuarios`
+-- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT;
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `examen`
---
-ALTER TABLE `examen`
-  ADD CONSTRAINT `examen_ibfk_1` FOREIGN KEY (`id_carrera`) REFERENCES `carreras` (`id_carrera`) ON UPDATE CASCADE;
-
---
--- Constraints for table `preguntas`
---
-ALTER TABLE `preguntas`
-  ADD CONSTRAINT `preguntas_ibfk_1` FOREIGN KEY (`id_examen`) REFERENCES `examen` (`id_examen`) ON UPDATE CASCADE;
-
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
