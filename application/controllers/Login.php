@@ -58,8 +58,6 @@ class Login extends REST_Controller {
         //SI TODO SALE CORRECTAMENTE
         
         //CREAR TOKEN
-        //1 formaa de crearlo
-        $token = bin2hex( openssl_random_pseudo_bytes(20) );
         //2 forma de crearlo
         $token = hash('ripemd160', $data['matricula']);
 
