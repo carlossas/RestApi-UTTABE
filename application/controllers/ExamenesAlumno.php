@@ -57,5 +57,38 @@ class ExamenesAlumno extends REST_Controller {
 		$this->response( $respuesta );
 
 	}
+
+	//CREAR UN NUEVO EXAMEN
+	public function crearExamen_post(){
+		$data = $this->post();
+
+		//SI TODO SALE BIEN
+        $examen = array(
+			'id_examen' => '',
+            'id_carrera' => $data['id_carrera'],
+			'id_profesor' => $data['id_profesor'],
+			'random' => $data['random'],
+			'numeroPreguntas' => $data['numeroPreguntas'],
+			'nombre' => $data['nombre'],
+			'tiempo' => $data['tiempo']
+		);
+
+		$this->db->insert('examen', $examen);
+
+		$ultimoId = $this->db->insert_id();
+
+		$examen['id_examen'] = $ultimoId;
+		
+			
+		$respuesta = array (
+			'error' => FALSE,
+			'result' => $examen
+
+		);
+
+		//DEVUELVE LA RESPUESTA
+		$this->response( $respuesta );
+
+	}
 	
 }
